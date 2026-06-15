@@ -1,4 +1,6 @@
 function buildPrompt(data) {
+    const schoolName = 'Northwest University, Kano';
+
     const githubText = data.github
         ? `The student's GitHub username is '${data.github}'. Include links to https://github.com/${data.github} in the footer and contact pages.`
         : `The student does not have a GitHub account yet. Do not include GitHub links.`;
@@ -7,7 +9,7 @@ function buildPrompt(data) {
 
     Student Profile:
     - Name: ${data.name}
-    - University: Northwest University, Kano
+    - University: ${schoolName}
     - Academic Level: 200 Level (Second Year Undergraduate)
     - Department: ${data.department}
     - Career Goal: ${data.career}
