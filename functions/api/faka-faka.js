@@ -2,13 +2,15 @@ function buildPrompt(data) {
     const schoolName = 'Northwest University, Kano';
 
     const githubText = data.github
-        ? `The student's GitHub username is '${data.github}'. Include links to https://github.com/${data.github} in the footer and contact pages.`
+        ? `The student's GitHub username is '${data.github}'. Include links to https://github.com/${data.github} in the footer and contact page.`
         : `The student does not have a GitHub account yet. Do not include GitHub links.`;
 
-    return `You are an expert frontend web developer. Generate a completely unique, highly detailed 10-page portfolio website for a university student.
+    return `You are an expert frontend web developer. Generate a completely unique, highly detailed 11-page portfolio website for a university student.
 
     Student Profile:
     - Name: ${data.name}
+    - Email: ${data.email}
+    - Phone: ${data.phone}
     - University: ${schoolName}
     - Academic Level: 200 Level
     - Department: ${data.department}
@@ -17,14 +19,18 @@ function buildPrompt(data) {
     - Hobbies & Interests: ${data.hobbies}
 
     Design Instructions:
-    - Randomly select a modern CSS framework via CDN (e.g., Tailwind CSS, Bootstrap 5, Bulma) to ensure the site looks visually distinct from others. Use the same framework across all 10 pages for this student.
-    - The student uploaded a profile picture: ${data.imageWidth}px width by ${data.imageHeight}px height. 
+    - Randomly select a modern CSS framework via CDN (e.g., Tailwind CSS, Bootstrap 5, Bulma) to ensure the site looks visually distinct. Use the same framework across all 11 pages.
+    - The student uploaded a profile picture: ${data.imageWidth}px width by ${data.imageHeight}px height.
     - Wherever the profile picture belongs, use EXACTLY this tag: <img src='profile.jpg' alt='${data.name} Profile Picture'>.
+    - Prominently feature the student's Email (${data.email}) and Phone (${data.phone}) in the site footer and on the contact.html page.
     - ${githubText}
 
-    Content Instructions:
-    - INVENT a realistic, professional backstory including their experience studying at ${schoolName}.
-    - Generate completely distinct, fully-coded HTML for ALL 10 of these pages: index.html, about.html, resume.html, contact.html, skills.html, project_1.html, project_2.html, awards.html, coursework.html, goals.html.
+    Content & Page Instructions (Generate EXACTLY these 11 pages):
+    1. index.html, about.html, resume.html, skills.html, project_1.html, project_2.html, coursework.html, hobbies.html, goals.html, contact.html.
+    2. fcc_journey.html: Write an engaging story about their experience completing the "Responsive Web Design" course on freeCodeCamp.
+       - You MUST include a placeholder image for their certificate using EXACTLY this tag: <img src='fcc_certificate.jpg' alt='freeCodeCamp Certificate'>.
+       - You MUST include a hyperlink for certificate verification using EXACTLY this href placeholder: <a href='FAKA_FAKA_FCC_LINK'>Verify Authentic Certificate on freeCodeCamp</a>.
+       - Style both the image and the link beautifully using your chosen CSS framework.
 
     CRITICAL JSON FORMATTING RULES:
     1. You MUST use SINGLE QUOTES for all HTML attributes (e.g., <div class='container'>). Do NOT use double quotes inside the HTML string.
@@ -78,7 +84,6 @@ export async function onRequestPost(context) {
         return new Response(aiResponse.body, {
             headers: { 'Content-Type': 'application/json' },
         });
-
     } catch (error) {
         return new Response(JSON.stringify({ error: error.message }), {
             status: 500,

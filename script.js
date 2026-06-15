@@ -35,6 +35,9 @@ async function faka_faka(event) {
         const career = formData.get('career');
         const github = formData.get('github') || "";
 
+        const email = formData.get('email');
+        const phone = formData.get('phone');
+
         const skillsString = formData.getAll('skills[]').join(', ');
         const hobbiesString = formData.getAll('hobbies[]').join(', ');
 
@@ -45,6 +48,8 @@ async function faka_faka(event) {
             name: name,
             department: department,
             career: career,
+            email: email,
+            phone: phone,
             skills: skillsString,
             hobbies: hobbiesString,
             github: github,
@@ -52,7 +57,7 @@ async function faka_faka(event) {
             imageHeight: dimensions.height
         };
 
-        if (statusText) statusText.innerText = "Ana ƙirƙirar shafuka 10 gaba ɗaya. Wannan zai ɗauki kusan minti biyu... (Ku ɗan jira)";
+        if (statusText) statusText.innerText = "Ana ƙirƙirar shafuka 11 gaba ɗaya. Wannan zai ɗauki kusan minti biyu... (Ku ɗan jira)";
 
         const response = await fetch('/api/faka-faka', {
             method: 'POST',
