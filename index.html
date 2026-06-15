@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ha">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Faka-Faka</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
+
+    <link rel="preload stylesheet" href="https://cdn.jsdelivr.net/npm/sysacss@0.1.0/sysa.min.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins&display=swap">
+
+    <style>
+    html, body, h1, h2, h3, h4, h5, h6, * {
+      font-family: 'Poppins', sans-serif !important;
+    }
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="/script.js"></script>
+  </head>
+  <body class="ss-container ss-mt-5 ss-center ss-bg-light-gray">
+    <h1 class="ss-tag ss-round">Faka-Faka</h1>
+    <p>Faka-faka ku ƙirƙiri portfolio assignment ɗinku anan.</p>
+
+    <div class="ss-container ss-bg-white ss-mobile ss-w-7 ss-auto">
+      <form action="/" method="post" enctype="multipart/form-data" onsubmit="faka_faka(event)" class="ss-py-5">
+
+        <label for="name" class="ss-label">Cikakken Suna <span class="ss-red">*</span></label>
+        <input type="text" id="name" name="name" class="ss-input" required>
+        <p class="ss-small ss-mt-0">Misali: Shuaib Yusuf Shuaib</p>
+        <hr class="ss-hr">
+
+        <label for="department" class="ss-label">Dufatumen <span class="ss-red">*</span></label>
+        <select id="department" name="department" class="ss-select" required>
+          <option value="Computer Science" class="ss-tag">Computer Science</option>
+          <option value="Software Engineering">Software Engineering</option>
+          <option value="Information & Communications Technology">ICT</option>
+          <option value="Cybersecurity">Cybersecurity</option>
+        </select>
+        <hr class="ss-hr">
+
+        <label for="career" class="ss-label">Abinda Kuke So Ku Zama <span class="ss-red">*</span></label>
+        <input type="text" id="career" name="career" placeholders="Misali: Software Developer, Data Analyst" class="ss-input" required>
+        <p class="ss-small ss-mt-0">Misali: Web Developer, App Developer, Data Analyst, AI Engineer, Cybersecurity</p>
+        <hr class="ss-hr">
+
+        <label for="skills" class="ss-label">Abubuwan Da Kuka Iya <span class="ss-red">*</span></label>
+        <select id="skills" name="skills[]" class="ss-select" multiple size="1" required>
+          <option value="HTML">HTML</option>
+          <option value="CSS">CSS</option>
+          <option value="JavaScript">JavaScript</option>
+          <option value="Python">Python</option>
+          <option value="Java">Java</option>
+          <option value="C++">C++</option>
+          <option value="PHP">PHP</option>
+          <option value="SQL">SQL</option>
+          <option value="Data Analysis">Data Analysis</option>
+          <option value="UI/UX">UI/UX Design</option>
+          <option value="Microsoft Word/Excel/PowerPoint">Microsoft Word/Excel/PowerPoint</option>
+        </select>
+        <hr class="ss-hr">
+
+        <label for="hobbies" class="ss-label">Abinda Kuke Sha'awar Yi A Gida <span class="ss-red">*</span></label>
+        <select id="hobbies" name="hobbies[]" class="ss-select" multiple size="1" required>
+          <option value="Sports & Football">Sports & Football</option>
+          <option value="Playing Games">Playing Games</option>
+          <option value="Watching Movies">Watching Movies</option>
+          <option value="Research">Research</option>
+          <option value="Reading">Reading</option>
+          <option value="Cooking">Cooking</option>
+        </select>
+        <hr class="ss-hr">
+
+        <label for="github" class="ss-label">Sunan GitHub Ɗinku (Idan kuna dashi)</label>
+        <input type="text" id="github" name="github" class="ss-input">
+        <p class="ss-small ss-mt-0">Misali: sysadev, bala-muntari, auduwa-balarabe</p>
+        <hr class="ss-hr">
+
+        <label for="picture" class="ss-label">Hoto <span class="ss-red">*</span></label>
+        <input type="file" id="picture" name="picture" accept="image/*" class="ss-input" required>
+        <hr class="ss-hr">
+
+        <input type="submit" value="Ƙirƙiri" class="ss-btn ss-mobile ss-w-5">
+        <p id="statusText" class="ss-small"></p>
+      </form>
+    </div>
+
+    <figure class="ss-py-4">
+      <img src="/author.png" alt="Shuaib Yusuf Shuaib" class="ss-round" width="200px" height="200px">
+      <figcaption lang="en">
+        <p>Hi, I am Shuaib and the developer behind Faka-Faka.<br>I built this tool to help our department launch clean and professional portfolios instantly.</p>
+        <p>Check out my <a href="https://sysa.pages.dev" target="_blank">portfolio</a> and my <a href="https://github.com/sysadev" target="_blank">GitHub</a></p>
+      </figcaption>
+    </figure>
+  </body>
+</html>
