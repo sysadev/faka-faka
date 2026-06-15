@@ -17,8 +17,6 @@ function getImageDimensions(file) {
     });
 }
 
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
 async function faka_faka(event) {
     event.preventDefault();
 
@@ -37,16 +35,13 @@ async function faka_faka(event) {
         const career = formData.get('career');
         const github = formData.get('github') || "";
 
-        const skillsArray = formData.getAll('skills[]');
-        const skillsString = skillsArray.join(', ');
-
-        const hobbiesArray = formData.getAll('hobbies[]');
-        const hobbiesString = hobbiesArray.join(', ');
+        const skillsString = formData.getAll('skills[]').join(', ');
+        const hobbiesString = formData.getAll('hobbies[]').join(', ');
 
         const profileImageFile = formData.get('picture');
         const dimensions = await getImageDimensions(profileImageFile);
 
-        const basePayload = {
+        const payload = {
             name: name,
             department: department,
             career: career,
@@ -57,51 +52,32 @@ async function faka_faka(event) {
             imageHeight: dimensions.height
         };
 
-        const pageBatches = [
-            ['index.html', 'about.html'],
-            ['resume.html', 'contact.html'],
-            ['project_1.html', 'project_2.html'],
-            ['skills.html', 'awards.html'],
-            ['coursework.html', 'goals.html']
-        ];
+        if (statusText) statusText.innerText = "Ana ƙirƙirar shafuka 10 gaba ɗaya. Wannan zai ɗauki kusan minti biyu... (Ku ɗan jira)";
 
-        let allGeneratedFiles = [];
+        const response = await fetch('/api/faka-faka', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
 
-        for (let i = 0; i < pageBatches.length; i++) {
-            if (statusText) {
-                statusText.innerText = `Ana ƙirƙirar kaso na ${i + 1} cikin ${pageBatches.length}... (Ku ɗan jira)`;
-            }
+        const streamedChunks = await response.json();
 
-            const batchPayload = {
-                ...basePayload,
-                requestedPages: pageBatches[i]
-            };
-
-            const response = await fetch('/api/faka-faka', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(batchPayload)
-            });
-
-            const data = await response.json();
-
-            if (data.error) {
-                throw new Error(data.error);
-            }
-
-            if (data.files && Array.isArray(data.files)) {
-                allGeneratedFiles = allGeneratedFiles.concat(data.files);
-            } else {
-                throw new Error("API did not return the expected file structure.");
-            }
-
-            if (i < pageBatches.length - 1) {
-                if (statusText) statusText.innerText = "Ana hutawa na daƙiƙa kaɗan don gujewa cunkoso...";
-                await delay(4000);
-            }
+        if (streamedChunks.error) {
+            throw new Error(streamedChunks.error);
         }
 
         if (statusText) statusText.innerText = "Ana tattara shafukan portfolio ɗinku...";
+
+        let combinedText = "";
+        streamedChunks.forEach(chunk => {
+            if (chunk.candidates && chunk.candidates.length > 0) {
+                combinedText += chunk.candidates[0].content.parts[0].text;
+            }
+        });
+
+        combinedText = combinedText.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
+
+        const finalData = JSON.parse(combinedText);
 
         if (typeof JSZip === 'undefined') {
             throw new Error("JSZip library is not loaded in the HTML.");
@@ -109,9 +85,13 @@ async function faka_faka(event) {
 
         const zip = new JSZip();
 
-        allGeneratedFiles.forEach(file => {
-            zip.file(file.filename, file.content);
-        });
+        if (finalData.files && Array.isArray(finalData.files)) {
+            finalData.files.forEach(file => {
+                zip.file(file.filename, file.content);
+            });
+        } else {
+            throw new Error("API did not return the expected file structure.");
+        }
 
         if (profileImageFile && profileImageFile.size > 0) {
             zip.file("profile.jpg", profileImageFile);
