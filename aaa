@@ -1,0 +1,7 @@
+curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=AQ.Ab8RN6IwkU4EytMLr0dUvAP6NDovD5lRBNIP72b-vVjrfs-bUQ" \
+-H "Content-Type: application/json" \
+-d '{
+  "contents": [{
+    "parts": [{"text": "Respond with the exact phrase: Faka-Faka is alive and ready."}]
+  }]
+}'
