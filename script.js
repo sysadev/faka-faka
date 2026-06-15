@@ -58,9 +58,11 @@ async function faka_faka(event) {
         };
 
         const pageBatches = [
-            ['index.html', 'about.html', 'resume.html', 'contact.html'],
-            ['skills.html', 'project_1.html', 'project_2.html'],
-            ['awards.html', 'coursework.html', 'goals.html']
+            ['index.html', 'about.html'],
+            ['resume.html', 'contact.html'],
+            ['project_1.html', 'project_2.html'],
+            ['skills.html', 'awards.html'],
+            ['coursework.html', 'goals.html']
         ];
 
         let allGeneratedFiles = [];
