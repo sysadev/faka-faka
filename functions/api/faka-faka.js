@@ -18,27 +18,30 @@ function buildPrompt(data) {
     - Core Skills: ${data.skills}
     - Hobbies & Interests: ${data.hobbies}
 
-    Design Instructions:
-    - Randomly select a modern CSS framework via CDN (e.g., Tailwind CSS, Bootstrap 5, Bulma) to ensure the site looks visually distinct. Use the same framework across all 11 pages.
-    - The student uploaded a profile picture: ${data.imageWidth}px width by ${data.imageHeight}px height.
-    - Wherever the profile picture belongs, use EXACTLY this tag: <img src='profile.jpg' alt='${data.name} Profile Picture'>.
-    - Prominently feature the student's Email (${data.email}) and Phone (${data.phone}) in the site footer and on the contact.html page.
+    Design & Layout Instructions:
+    - Randomly select a modern CSS framework via CDN (e.g., Tailwind CSS, Bootstrap 5, Bulma) to ensure the site looks visually distinct.
+    - Create ONE master HTML layout string containing the <!DOCTYPE html>, <head>, <nav>, and <footer>.
+    - Inside that master layout, put EXACTLY this placeholder where the page content should go: FAKA_FAKA_CONTENT_HERE
+    - Prominently feature the student's Email (${data.email}) and Phone (${data.phone}) in the site footer.
     - ${githubText}
 
-    Content & Page Instructions (Generate EXACTLY these 11 pages):
+    Content Instructions (Generate the INNER HTML ONLY for these 11 pages):
     1. index.html, about.html, resume.html, skills.html, project_1.html, project_2.html, coursework.html, hobbies.html, goals.html, contact.html.
-    2. fcc_journey.html: Write an engaging story about their experience completing the "Responsive Web Design" course on freeCodeCamp.
-       - You MUST include a placeholder image for their certificate using EXACTLY this tag: <img src='fcc_certificate.jpg' alt='freeCodeCamp Certificate'>.
-       - You MUST include a hyperlink for certificate verification using EXACTLY this href placeholder: <a href='FAKA_FAKA_FCC_LINK'>Verify Authentic Certificate on freeCodeCamp</a>.
-       - Style both the image and the link beautifully using your chosen CSS framework.
+    2. fcc_journey.html: Write an engaging story about completing the "Responsive Web Design" course on freeCodeCamp. Include EXACTLY: <img src='fcc_certificate.jpg' alt='freeCodeCamp Certificate'> and EXACTLY: <a href='FAKA_FAKA_FCC_LINK'>Verify Authentic Certificate on freeCodeCamp</a>.
+    - Wherever the profile picture belongs in the content, use EXACTLY: <img src='profile.jpg' alt='${data.name} Profile Picture'>.
 
     CRITICAL JSON FORMATTING RULES:
-    1. You MUST use SINGLE QUOTES for all HTML attributes (e.g., <div class='container'>). Do NOT use double quotes inside the HTML string.
-    2. Do NOT wrap your response in markdown code blocks. Return ONLY the raw JSON object.
+    1. You MUST use SINGLE QUOTES for all HTML attributes (e.g., <div class='container'>).
+    2. Return raw JSON. Do NOT wrap in markdown blocks.
 
-    Output:
-    Respond STRICTLY with a JSON object exactly in this format:
-    { "files": [ { "filename": "index.html", "content": "<!DOCTYPE html>..." } ] }`;
+    Output STRICTLY in this JSON format:
+    {
+      "layout": "<!DOCTYPE html><html>...<nav>...</nav><main>FAKA_FAKA_CONTENT_HERE</main><footer>...</footer></html>",
+      "pages": [
+        { "filename": "index.html", "content": "<section><h1>Welcome</h1>...</section>" },
+        { "filename": "about.html", "content": "<section>...</section>" }
+      ]
+    }`;
 }
 
 export async function onRequestPost(context) {
@@ -84,6 +87,7 @@ export async function onRequestPost(context) {
         return new Response(aiResponse.body, {
             headers: { 'Content-Type': 'application/json' },
         });
+
     } catch (error) {
         return new Response(JSON.stringify({ error: error.message }), {
             status: 500,

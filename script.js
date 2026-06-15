@@ -90,12 +90,13 @@ async function faka_faka(event) {
 
         const zip = new JSZip();
 
-        if (finalData.files && Array.isArray(finalData.files)) {
-            finalData.files.forEach(file => {
-                zip.file(file.filename, file.content);
+        if (finalData.layout && finalData.pages && Array.isArray(finalData.pages)) {
+            finalData.pages.forEach(page => {
+                const fullHTMLFile = finalData.layout.replace('FAKA_FAKA_CONTENT_HERE', page.content);
+                zip.file(page.filename, fullHTMLFile);
             });
         } else {
-            throw new Error("API did not return the expected file structure.");
+            throw new Error("API did not return the expected layout/pages structure.");
         }
 
         if (profileImageFile && profileImageFile.size > 0) {
