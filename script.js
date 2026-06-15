@@ -69,7 +69,7 @@ async function faka_faka(event) {
 
         for (let i = 0; i < pageBatches.length; i++) {
             if (statusText) {
-                statusText.innerText = `Ana ƙirƙirar kaso na ${i + 1} cikin 3... (Ku ɗan jira)`;
+                statusText.innerText = `Ana ƙirƙirar kaso na ${i + 1} cikin ${pageBatches.length}... (Ku ɗan jira)`;
             }
 
             const batchPayload = {
