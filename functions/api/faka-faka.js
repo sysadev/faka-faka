@@ -21,13 +21,18 @@ function buildPrompt(data) {
     Design & Image Instructions:
     - Randomly select a modern CSS framework via CDN (e.g., Tailwind CSS, Bootstrap 5, or Bulma) to ensure each generated site looks visually distinct. Use this same framework for every page to maintain consistency.
     - The student uploaded a profile picture with dimensions: ${data.imageWidth}px width by ${data.imageHeight}px height. Use this aspect ratio to intelligently style the layout around the image.
-    - Wherever the profile picture belongs, use EXACTLY this tag: <img src="profile.jpg" alt="${data.name}'s Profile Picture">.
+    - Wherever the profile picture belongs, use EXACTLY this tag: <img src='profile.jpg' alt='${data.name} Profile Picture'>.
     - ${githubText}
 
     Content Instructions:
     - Using their department, skills, and hobbies, INVENT a realistic, professional, and engaging backstory that includes their experience studying at ${schoolName}.
     - Invent 2 realistic beginner/intermediate academic projects related to their skills (${data.skills}) that a 200-level student would have completed.
     - Generate lengthy, highly detailed text STRICTLY for the following pages: ${pagesToGenerate}. DO NOT generate any pages outside of this list. DO NOT use placeholder text (lorem ipsum).
+
+    CRITICAL JSON FORMATTING RULES:
+    1. You MUST use SINGLE QUOTES for all HTML attributes (e.g., <div class='container'>, NOT <div class="container">).
+    2. Do NOT use unescaped double quotes inside the HTML content, as it will break the JSON parser.
+    3. Do NOT wrap your response in markdown code blocks. Return ONLY the raw JSON object.
 
     Output:
     Respond STRICTLY with a JSON object exactly in this format:
@@ -81,7 +86,9 @@ export async function onRequestPost(context) {
             throw new Error('Faka-Faka failed to generate the site layout. Please try again: ' + JSON.stringify(aiData));
         }
 
-        const generatedContent = aiData.candidates[0].content.parts[0].text;
+        let generatedContent = aiData.candidates[0].content.parts[0].text;
+        generatedContent = generatedContent.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
+
         const generatedJSON = JSON.parse(generatedContent);
 
         await env.RATE_LIMITER.put(limitKey, (currentUsage + 1).toString(), { expirationTtl: 86400 });
