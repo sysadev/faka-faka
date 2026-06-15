@@ -17,6 +17,8 @@ function getImageDimensions(file) {
     });
 }
 
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 async function faka_faka(event) {
     event.preventDefault();
 
@@ -90,6 +92,11 @@ async function faka_faka(event) {
             } else {
                 throw new Error("API did not return the expected file structure.");
             }
+
+            if (i < pageBatches.length - 1) {
+                if (statusText) statusText.innerText = "Ana hutawa na daƙiƙa kaɗan don gujewa cunkoso...";
+                await delay(4000);
+            }
         }
 
         if (statusText) statusText.innerText = "Ana tattara shafukan portfolio ɗinku...";
@@ -99,6 +106,7 @@ async function faka_faka(event) {
         }
 
         const zip = new JSZip();
+
         allGeneratedFiles.forEach(file => {
             zip.file(file.filename, file.content);
         });
