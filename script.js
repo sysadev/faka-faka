@@ -44,7 +44,7 @@ async function faka_faka(event) {
         const profileImageFile = formData.get('picture');
         const dimensions = await getImageDimensions(profileImageFile);
 
-        const payload = {
+        const basePayload = {
             name: name,
             department: department,
             career: career,
@@ -55,18 +55,41 @@ async function faka_faka(event) {
             imageHeight: dimensions.height
         };
 
-        if (statusText) statusText.innerText = "Ana ƙirƙirar shafin ku... (Ku ɗan jira)";
+        const pageBatches = [
+            ['index.html', 'about.html', 'resume.html', 'contact.html'],
+            ['skills.html', 'project_1.html', 'project_2.html'],
+            ['awards.html', 'coursework.html', 'goals.html']
+        ];
 
-        const response = await fetch('/api/faka-faka', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        });
+        let allGeneratedFiles = [];
 
-        const data = await response.json();
+        for (let i = 0; i < pageBatches.length; i++) {
+            if (statusText) {
+                statusText.innerText = `Ana ƙirƙirar kaso na ${i + 1} cikin 3... (Ku ɗan jira)`;
+            }
 
-        if (data.error) {
-            throw new Error(data.error);
+            const batchPayload = {
+                ...basePayload,
+                requestedPages: pageBatches[i]
+            };
+
+            const response = await fetch('/api/faka-faka', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(batchPayload)
+            });
+
+            const data = await response.json();
+
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            if (data.files && Array.isArray(data.files)) {
+                allGeneratedFiles = allGeneratedFiles.concat(data.files);
+            } else {
+                throw new Error("API did not return the expected file structure.");
+            }
         }
 
         if (statusText) statusText.innerText = "Ana tattara shafukan portfolio ɗinku...";
@@ -76,13 +99,9 @@ async function faka_faka(event) {
         }
 
         const zip = new JSZip();
-        if (data.files && Array.isArray(data.files)) {
-            data.files.forEach(file => {
-                zip.file(file.filename, file.content);
-            });
-        } else {
-            throw new Error("API did not return the expected file structure.");
-        }
+        allGeneratedFiles.forEach(file => {
+            zip.file(file.filename, file.content);
+        });
 
         if (profileImageFile && profileImageFile.size > 0) {
             zip.file("profile.jpg", profileImageFile);

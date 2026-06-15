@@ -1,11 +1,13 @@
 function buildPrompt(data) {
     const schoolName = 'Northwest University, Kano';
 
+    const pagesToGenerate = data.requestedPages.join(', ');
+
     const githubText = data.github
         ? `The student's GitHub username is '${data.github}'. Include links to https://github.com/${data.github} in the footer and contact pages.`
         : `The student does not have a GitHub account yet. Do not include GitHub links.`;
 
-    return `You are an expert frontend web developer and technical writer. Generate a completely unique, highly detailed 10-page portfolio website for a university student.
+    return `You are an expert frontend web developer and technical writer. Generate a completely unique, highly detailed portfolio website for a university student.
 
     Student Profile:
     - Name: ${data.name}
@@ -17,7 +19,7 @@ function buildPrompt(data) {
     - Hobbies & Interests: ${data.hobbies}
 
     Design & Image Instructions:
-    - Randomly select a modern CSS framework via CDN (e.g., Tailwind CSS, Bootstrap 5, or Bulma) to ensure each generated site looks visually distinct.
+    - Randomly select a modern CSS framework via CDN (e.g., Tailwind CSS, Bootstrap 5, or Bulma) to ensure each generated site looks visually distinct. Use this same framework for every page to maintain consistency.
     - The student uploaded a profile picture with dimensions: ${data.imageWidth}px width by ${data.imageHeight}px height. Use this aspect ratio to intelligently style the layout around the image.
     - Wherever the profile picture belongs, use EXACTLY this tag: <img src="profile.jpg" alt="${data.name}'s Profile Picture">.
     - ${githubText}
@@ -25,8 +27,7 @@ function buildPrompt(data) {
     Content Instructions:
     - Using their department, skills, and hobbies, INVENT a realistic, professional, and engaging backstory that includes their experience studying at ${schoolName}.
     - Invent 2 realistic beginner/intermediate academic projects related to their skills (${data.skills}) that a 200-level student would have completed.
-    - Generate lengthy, highly detailed text for all 10 pages. DO NOT use placeholder text (lorem ipsum).
-    - Required Pages: index.html, about.html, resume.html, contact.html, skills.html, project_1.html, project_2.html, awards.html, coursework.html, goals.html.
+    - Generate lengthy, highly detailed text STRICTLY for the following pages: ${pagesToGenerate}. DO NOT generate any pages outside of this list. DO NOT use placeholder text (lorem ipsum).
 
     Output:
     Respond STRICTLY with a JSON object exactly in this format:
@@ -43,7 +44,7 @@ export async function onRequestPost(context) {
         let currentUsage = await env.RATE_LIMITER.get(limitKey);
         currentUsage = currentUsage ? parseInt(currentUsage) : 0;
 
-        if (currentUsage >= 3) {
+        if (currentUsage >= 9) {
             return new Response(JSON.stringify({
                 error: 'You have reached your limit of 3 portfolios per day. Please check back tomorrow!'
             }), {
@@ -53,6 +54,9 @@ export async function onRequestPost(context) {
         }
 
         const payload = await request.json();
+        if (!payload.requestedPages || !Array.isArray(payload.requestedPages)) {
+            throw new Error('Invalid payload: requestedPages array is missing.');
+        }
 
         const prompt = buildPrompt(payload);
 
