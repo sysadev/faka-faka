@@ -74,7 +74,7 @@ export async function onRequestPost(context) {
 
         if (!aiData.candidates || aiData.candidates.length === 0) {
             console.error('Gemini API Error Payload:', JSON.stringify(aiData));
-            throw new Error('Faka-Faka failed to generate the site layout. Please try again.');
+            throw new Error('Faka-Faka failed to generate the site layout. Please try again: ' + JSON.stringify(aiData));
         }
 
         const generatedContent = aiData.candidates[0].content.parts[0].text;
