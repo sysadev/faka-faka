@@ -2,6 +2,9 @@ function buildPrompt(data) {
     const schoolName = 'Northwest University, Kano';
     const currentYear = new Date().getFullYear();
 
+    const frameworks = ['Bootstrap 5', 'Bulma', 'Tailwind CSS', 'Materialize CSS', 'UIKit'];
+    const randomFramework = frameworks[Math.floor(Math.random() * frameworks.length)];
+
     const githubText = data.github
         ? `The student's GitHub username is '${data.github}'. Include links to https://github.com/${data.github} in the footer and contact page.`
         : `The student does not have a GitHub account yet. Do not include GitHub links.`;
@@ -20,10 +23,11 @@ function buildPrompt(data) {
     - Hobbies & Interests: ${data.hobbies}
 
     Design & Layout Instructions (CRITICAL FOR UNIQUENESS):
-    - Randomly select a modern CSS framework via CDN (e.g., Tailwind CSS, Bootstrap 5, Bulma, UIKit) to ensure the site looks visually distinct.
-    - FORCE STRUCTURAL VARIATION: Do not build the exact same layout for every prompt. Randomly choose between a traditional Top Navbar, a Left Sidebar Navigation, or a modern Floating Navigation menu.
+    - You MUST use the ${randomFramework} framework via CDN. Do not use any other framework.
+    - FORCE STRUCTURAL VARIATION: Randomly choose between a traditional Top Navbar, a Left Sidebar Navigation, or a Floating Navigation menu. 
     - Randomly choose a distinct color scheme: Default Light Mode, Deep Dark Mode, or a vibrant colorful theme.
     - Create ONE master HTML layout string containing the <!DOCTYPE html>, <head>, <nav>, and <footer>.
+    - The <nav> MUST be a professional, fully styled, responsive navigation menu (e.g., using proper flexbox/grid layout, nice padding, hover effects). Do NOT just output plain, unstyled buttons.
     - Inside that master layout, put EXACTLY this placeholder where the page content should go: FAKA_FAKA_CONTENT_HERE
     - Prominently feature the student's Email (${data.email}) and Phone (${data.phone}) in the site footer.
     - The copyright year in the footer MUST read ${currentYear}.
@@ -33,6 +37,9 @@ function buildPrompt(data) {
     1. index.html, about.html, resume.html, skills.html, project_1.html, project_2.html, coursework.html, hobbies.html, goals.html, contact.html.
     2. fcc_journey.html: Write an engaging story about completing the "Responsive Web Design" course on freeCodeCamp. Include EXACTLY: <img src='fcc_certificate.jpg' alt='freeCodeCamp Certificate'> and EXACTLY: <a href='FAKA_FAKA_FCC_LINK'>Verify Authentic Certificate on freeCodeCamp</a>.
     - Wherever the profile picture belongs in the content, use EXACTLY: <img src='profile.jpg' alt='${data.name} Profile Picture'>.
+
+    Navigation Link Labeling Rule:
+    - When creating the navigation links in the <nav>, use highly professional labels. For example, the link to 'fcc_journey.html' MUST be labeled "freeCodeCamp Certification" or "My Learning Journey", NOT "fcc Journey".
 
     CRITICAL JSON FORMATTING RULES:
     1. You MUST use SINGLE QUOTES for all HTML attributes (e.g., <div class='container'>).
