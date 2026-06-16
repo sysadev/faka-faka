@@ -34,7 +34,6 @@ async function faka_faka(event) {
         const department = formData.get('department');
         const career = formData.get('career');
         const github = formData.get('github') || "";
-
         const email = formData.get('email');
         const phone = formData.get('phone');
 
@@ -80,9 +79,8 @@ async function faka_faka(event) {
             }
         });
 
-        combinedText = combinedText.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim();
-
-        const finalData = JSON.parse(combinedText);
+        combinedText = combinedText.replace(/^```[\s\S]*?\n/gi, '').replace(/
+```$/g, '').trim();
 
         if (typeof JSZip === 'undefined') {
             throw new Error("JSZip library is not loaded in the HTML.");
@@ -90,13 +88,35 @@ async function faka_faka(event) {
 
         const zip = new JSZip();
 
-        if (finalData.layout && finalData.pages && Array.isArray(finalData.pages)) {
-            finalData.pages.forEach(page => {
-                const fullHTMLFile = finalData.layout.replace('FAKA_FAKA_CONTENT_HERE', page.content);
-                zip.file(page.filename, fullHTMLFile);
-            });
-        } else {
-            throw new Error("API did not return the expected layout/pages structure.");
+        const layoutMatch = combinedText.match(/\[FAKA_LAYOUT\]([\s\S]*?)\[\/FAKA_LAYOUT\]/);
+        if (!layoutMatch) {
+            console.error("AI Output:", combinedText);
+            throw new Error("API failed to generate the master layout correctly.");
+        }
+        const layoutHTML = layoutMatch[1].trim();
+
+        const pageParts = combinedText.split(/\[FAKA_PAGE:/);
+        let pagesProcessed = 0;
+
+        for (let i = 1; i < pageParts.length; i++) {
+            const part = pageParts[i];
+            const closeBracketIdx = part.indexOf(']');
+
+            if (closeBracketIdx > -1) {
+                const filename = part.substring(0, closeBracketIdx).trim();
+                let content = part.substring(closeBracketIdx + 1);
+
+                content = content.split('[/FAKA_PAGE]')[0].trim();
+
+                const fullHTMLFile = layoutHTML.replace('FAKA_FAKA_CONTENT_HERE', content);
+
+                zip.file(filename, fullHTMLFile);
+                pagesProcessed++;
+            }
+        }
+
+        if (pagesProcessed === 0) {
+            throw new Error("API failed to slice the pages correctly.");
         }
 
         if (profileImageFile && profileImageFile.size > 0) {
