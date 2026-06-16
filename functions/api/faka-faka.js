@@ -12,7 +12,7 @@ function buildPrompt(data) {
     return `CRITICAL GENERATION RULES - YOU MUST OBEY THESE TO PREVENT ERRORS:
     1. MANDATORY COMPLETION: You MUST generate the Master Layout and ALL 11 INDIVIDUAL PAGES. Do not stop early.
     2. NO EMPTY PAGES: Every single [FAKA_PAGE:filename.html] tag MUST contain actual HTML content inside it. Do not leave any page empty.
-    3. CONSERVE TOKENS: Keep the text content inside the HTML pages brief and concise. Use short sentences. Do not write long paragraphs.
+    3. CONSERVE TOKENS: Keep the text content inside the HTML pages brief and concise. Use short sentences.
     4. NO MARKDOWN: Do not wrap your response in \`\`\`html or \`\`\` blocks. Output only the raw tags.
 
     You are an expert frontend web developer. Generate a completely unique, highly detailed 11-page portfolio website for a university student.
