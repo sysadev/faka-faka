@@ -9,7 +9,13 @@ function buildPrompt(data) {
         ? `The student's GitHub username is '${data.github}'. Include links to https://github.com/${data.github} in the footer and contact page.`
         : `The student does not have a GitHub account yet. Do not include GitHub links.`;
 
-    return `You are an expert frontend web developer. Generate a completely unique, highly detailed 11-page portfolio website for a university student.
+    return `CRITICAL GENERATION RULES - YOU MUST OBEY THESE TO PREVENT ERRORS:
+    1. MANDATORY COMPLETION: You MUST generate the Master Layout and ALL 11 INDIVIDUAL PAGES. Do not stop early.
+    2. NO EMPTY PAGES: Every single [FAKA_PAGE:filename.html] tag MUST contain actual HTML content inside it. Do not leave any page empty.
+    3. CONSERVE TOKENS: Keep the text content inside the HTML pages brief and concise. Use short sentences. Do not write long paragraphs.
+    4. NO MARKDOWN: Do not wrap your response in \`\`\`html or \`\`\` blocks. Output only the raw tags.
+
+    You are an expert frontend web developer. Generate a completely unique, highly detailed 11-page portfolio website for a university student.
 
     Student Profile:
     - Name: ${data.name}
@@ -91,7 +97,8 @@ export async function onRequestPost(context) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    contents: [{ parts: [{ text: prompt }] }]
+                    contents: [{ parts: [{ text: prompt }] }],
+                    generationConfig: { maxOutputTokens: 50000 }
                 })
             }
         );
