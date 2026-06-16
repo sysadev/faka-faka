@@ -34,8 +34,8 @@ async function faka_faka(event) {
         const department = formData.get('department');
         const career = formData.get('career');
         const github = formData.get('github') || "";
-        const email = formData.get('email');
-        const phone = formData.get('phone');
+        const email = formData.get('email') || "";
+        const phone = formData.get('phone') || "";
 
         const skillsString = formData.getAll('skills[]').join(', ');
         const hobbiesString = formData.getAll('hobbies[]').join(', ');
@@ -79,8 +79,17 @@ async function faka_faka(event) {
             }
         });
 
-        combinedText = combinedText.replace(/^```[\s\S]*?\n/gi, '').replace(/
-```$/g, '').trim();
+        combinedText = combinedText.trim();
+
+        if (combinedText.startsWith('```')) {
+            const firstNewline = combinedText.indexOf('\n');
+            if (firstNewline !== -1) {
+                combinedText = combinedText.substring(firstNewline + 1);
+            }
+        }
+        if (combinedText.endsWith('```')) {
+            combinedText = combinedText.substring(0, combinedText.length - 3).trim();
+        }
 
         if (typeof JSZip === 'undefined') {
             throw new Error("JSZip library is not loaded in the HTML.");
@@ -88,14 +97,20 @@ async function faka_faka(event) {
 
         const zip = new JSZip();
 
-        const layoutMatch = combinedText.match(/\[FAKA_LAYOUT\]([\s\S]*?)\[\/FAKA_LAYOUT\]/);
-        if (!layoutMatch) {
+        const layoutStartTag = '[FAKA_LAYOUT]';
+        const layoutEndTag = '[/FAKA_LAYOUT]';
+
+        const startIdx = combinedText.indexOf(layoutStartTag);
+        const endIdx = combinedText.indexOf(layoutEndTag);
+
+        if (startIdx === -1 || endIdx === -1) {
             console.error("AI Output:", combinedText);
             throw new Error("API failed to generate the master layout correctly.");
         }
-        const layoutHTML = layoutMatch[1].trim();
 
-        const pageParts = combinedText.split(/\[FAKA_PAGE:/);
+        const layoutHTML = combinedText.substring(startIdx + layoutStartTag.length, endIdx).trim();
+
+        const pageParts = combinedText.split('[FAKA_PAGE:');
         let pagesProcessed = 0;
 
         for (let i = 1; i < pageParts.length; i++) {
