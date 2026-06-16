@@ -25,6 +25,7 @@ function buildPrompt(data) {
     Design & Layout Instructions (CRITICAL FOR UNIQUENESS):
     - You MUST use the ${randomFramework} framework via CDN. Do not use any other framework.
     - FORCE STRUCTURAL VARIATION: Randomly choose between a traditional Top Navbar, a Left Sidebar Navigation, or a Floating Navigation menu. 
+    - MOBILE RESPONSIVENESS (CRITICAL): The website MUST be fully usable on mobile phones. You MUST include a visible hamburger menu icon for small screens. You MUST include a small inline <script> tag just before the closing </body> tag in the master layout to ensure the hamburger menu actually toggles the navigation visibility.
     - Randomly choose a distinct color scheme: Default Light Mode, Deep Dark Mode, or a vibrant colorful theme.
     - Create ONE master HTML layout string containing the <!DOCTYPE html>, <head>, <nav>, and <footer>.
     - The <nav> MUST be a professional, fully styled, responsive navigation menu (e.g., using proper flexbox/grid layout, nice padding, hover effects). Do NOT just output plain, unstyled buttons.
@@ -47,7 +48,7 @@ function buildPrompt(data) {
 
     Output STRICTLY in this JSON format:
     {
-      "layout": "<!DOCTYPE html><html>...<nav>...</nav><main>FAKA_FAKA_CONTENT_HERE</main><footer>...</footer></html>",
+      "layout": "<!DOCTYPE html><html>...<nav>...</nav><main>FAKA_FAKA_CONTENT_HERE</main><script>/* Hamburger Toggle JS */</script><footer>...</footer></html>",
       "pages": [
         { "filename": "index.html", "content": "<section><h1>Welcome</h1>...</section>" },
         { "filename": "about.html", "content": "<section>...</section>" }
