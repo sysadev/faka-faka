@@ -1,5 +1,6 @@
 function buildPrompt(data) {
     const schoolName = 'Northwest University, Kano';
+    const currentYear = new Date().getFullYear();
 
     const githubText = data.github
         ? `The student's GitHub username is '${data.github}'. Include links to https://github.com/${data.github} in the footer and contact page.`
@@ -18,11 +19,14 @@ function buildPrompt(data) {
     - Core Skills: ${data.skills}
     - Hobbies & Interests: ${data.hobbies}
 
-    Design & Layout Instructions:
-    - Randomly select a modern CSS framework via CDN (e.g., Tailwind CSS, Bootstrap 5, Bulma) to ensure the site looks visually distinct.
+    Design & Layout Instructions (CRITICAL FOR UNIQUENESS):
+    - Randomly select a modern CSS framework via CDN (e.g., Tailwind CSS, Bootstrap 5, Bulma, UIKit) to ensure the site looks visually distinct.
+    - FORCE STRUCTURAL VARIATION: Do not build the exact same layout for every prompt. Randomly choose between a traditional Top Navbar, a Left Sidebar Navigation, or a modern Floating Navigation menu.
+    - Randomly choose a distinct color scheme: Default Light Mode, Deep Dark Mode, or a vibrant colorful theme.
     - Create ONE master HTML layout string containing the <!DOCTYPE html>, <head>, <nav>, and <footer>.
     - Inside that master layout, put EXACTLY this placeholder where the page content should go: FAKA_FAKA_CONTENT_HERE
     - Prominently feature the student's Email (${data.email}) and Phone (${data.phone}) in the site footer.
+    - The copyright year in the footer MUST read ${currentYear}.
     - ${githubText}
 
     Content Instructions (Generate the INNER HTML ONLY for these 11 pages):
@@ -87,7 +91,6 @@ export async function onRequestPost(context) {
         return new Response(aiResponse.body, {
             headers: { 'Content-Type': 'application/json' },
         });
-
     } catch (error) {
         return new Response(JSON.stringify({ error: error.message }), {
             status: 500,
