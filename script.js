@@ -34,8 +34,8 @@ async function faka_faka(event) {
         const department = formData.get('department');
         const career = formData.get('career');
         const github = formData.get('github') || "";
-        const email = formData.get('email') || "";
-        const phone = formData.get('phone') || "";
+        const email = formData.get('email');
+        const phone = formData.get('phone');
 
         const skillsString = formData.getAll('skills[]').join(', ');
         const hobbiesString = formData.getAll('hobbies[]').join(', ');
@@ -92,7 +92,7 @@ async function faka_faka(event) {
         }
 
         if (typeof JSZip === 'undefined') {
-            throw new Error("JSZip library is not loaded in the HTML.");
+            throw new Error("JSZip library is not loaded.");
         }
 
         const zip = new JSZip();
@@ -104,7 +104,6 @@ async function faka_faka(event) {
         const endIdx = combinedText.indexOf(layoutEndTag);
 
         if (startIdx === -1 || endIdx === -1) {
-            console.error("AI Output:", combinedText);
             throw new Error("API failed to generate the master layout correctly.");
         }
 
@@ -147,9 +146,20 @@ async function faka_faka(event) {
         downloadLink.click();
 
         if (statusText) statusText.innerText = "Komai ya kammala! Ku duba cikin downloads folder ɗinku.";
+
+        form.reset();
     } catch (err) {
-        if (statusText) statusText.innerText = "An samu wata matsala: " + err.message;
-        console.error("Portfolio Generation Error:", err);
+        console.error("Faka-Faka Technical Error:", err);
+
+        if (statusText) {
+            const errorMessage = err.message || "";
+
+            if (errorMessage.includes('limit of 3 portfolios')) {
+                statusText.innerText = "Yi haƙuri, kun cinye adadin ku na yau (guda 3). Don Allah ku dawo gobe!";
+            } else {
+                statusText.innerText = "Yi haƙuri, an samu matsala wajen haɗa shafukan ku. Don Allah a sake gwadawa bayan ɗan lokaci.";
+            }
+        }
     } finally {
         submitBtn.disabled = false;
     }
