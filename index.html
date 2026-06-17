@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ha">
+<html lang="en">
   <head>
     <script>
     if (location.href.includes("eruda")) {
@@ -15,7 +15,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="title" content="Faka-Faka">
-    <meta name="description" content="Faka-faka ku ƙirƙiri portfolio assignment ɗinku anan.">
+    <meta name="description" content="Faka-faka – create your portfolio assignment here.">
 
     <title>Faka-Faka</title>
 
@@ -36,26 +36,26 @@
   </head>
   <body class="ss-container ss-mt-5 ss-center ss-bg-light-gray">
     <h1 class="ss-tag ss-round">Faka-Faka</h1>
-    <p>Faka-faka ku ƙirƙiri portfolio assignment ɗinku anan.</p>
+    <p>Create your portfolio assignment here.</p>
 
     <div class="ss-container ss-bg-white ss-mobile ss-w-7 ss-auto">
       <form action="/" method="post" enctype="multipart/form-data" onsubmit="faka_faka(event)" class="ss-py-5">
-        <label for="name" class="ss-label">Cikakken Suna <span class="ss-red">*</span></label>
+        <label for="name" class="ss-label">Full Name <span class="ss-red">*</span></label>
         <input type="text" id="name" name="name" class="ss-input" required>
-        <p class="ss-small ss-mt-0">Misali: Shuaib Yusuf Shuaib</p>
+        <p class="ss-small ss-mt-0">Example: Shuaib Yusuf Shuaib</p>
         <hr class="ss-hr">
 
-        <label for="email" class="ss-label">Adireshin Imel <span class="ss-red">*</span></label>
+        <label for="email" class="ss-label">Email Address <span class="ss-red">*</span></label>
         <input type="email" id="email" name="email" class="ss-input" required>
-        <p class="ss-small ss-mt-0">Misali: garba.bala126@gmail.com</p>
+        <p class="ss-small ss-mt-0">Example: garba.bala126@gmail.com</p>
         <hr class="ss-hr">
 
-        <label for="phone" class="ss-label">Lambar Waya <span class="ss-red">*</span></label>
+        <label for="phone" class="ss-label">Phone Number <span class="ss-red">*</span></label>
         <input type="tel" id="phone" name="phone" class="ss-input" required>
-        <p class="ss-small ss-mt-0">Misali: +2348012345678</p>
+        <p class="ss-small ss-mt-0">Example: +2348012345678</p>
         <hr class="ss-hr">
 
-        <label for="department" class="ss-label">Dufatumen <span class="ss-red">*</span></label>
+        <label for="department" class="ss-label">Department <span class="ss-red">*</span></label>
         <select id="department" name="department" class="ss-select" required>
           <option value="Computer Science" class="ss-tag">Computer Science</option>
           <option value="Software Engineering">Software Engineering</option>
@@ -64,12 +64,12 @@
         </select>
         <hr class="ss-hr">
 
-        <label for="career" class="ss-label">Abinda Kuke So Ku Zama <span class="ss-red">*</span></label>
-        <input type="text" id="career" name="career" placeholders="Misali: Software Developer, Data Analyst" class="ss-input" required>
-        <p class="ss-small ss-mt-0">Misali: Web Developer, App Developer, Data Analyst, AI Engineer, Cybersecurity</p>
+        <label for="career" class="ss-label">Career Role <span class="ss-red">*</span></label>
+        <input type="text" id="career" name="career" class="ss-input" required>
+        <p class="ss-small ss-mt-0">Example: Web Developer, App Developer, Data Analyst, AI Engineer, Cybersecurity</p>
         <hr class="ss-hr">
 
-        <label for="skills" class="ss-label">Abubuwan Da Kuka Iya <span class="ss-red">*</span></label>
+        <label for="skills" class="ss-label">Skills <span class="ss-red">*</span></label>
         <select id="skills" name="skills[]" class="ss-select" multiple size="1" required>
           <option value="HTML">HTML</option>
           <option value="CSS">CSS</option>
@@ -85,7 +85,7 @@
         </select>
         <hr class="ss-hr">
 
-        <label for="hobbies" class="ss-label">Abinda Kuke Sha'awar Yi A Gida <span class="ss-red">*</span></label>
+        <label for="hobbies" class="ss-label">Hobbies <span class="ss-red">*</span></label>
         <select id="hobbies" name="hobbies[]" class="ss-select" multiple size="1" required>
           <option value="Sports & Football">Sports & Football</option>
           <option value="Playing Games">Playing Games</option>
@@ -96,19 +96,19 @@
         </select>
         <hr class="ss-hr">
 
-        <label for="github" class="ss-label">Sunan GitHub Ɗinku (Idan kuna dashi)</label>
+        <label for="github" class="ss-label">GitHub Username (If you have it)</label>
         <input type="text" id="github" name="github" class="ss-input">
-        <p class="ss-small ss-mt-0">Misali: sysadev, bala-muntari, auduwa-balarabe</p>
+        <p class="ss-small ss-mt-0">Example: sysadev, bala-muntari, auduwa-balarabe</p>
         <hr class="ss-hr">
 
-        <label for="picture" class="ss-label">Hoto <span class="ss-red">*</span></label>
+        <label for="picture" class="ss-label">Picture <span class="ss-red">*</span></label>
         <input type="file" id="picture" name="picture" accept="image/*" class="ss-input" required>
         <hr class="ss-hr">
 
         <input type="submit" value="Ƙirƙiri" class="ss-btn ss-mobile ss-w-5">
         <p id="statusText" class="ss-small"></p>
       </form>
-      <p><a href="/jagora" target="_blank">Danna nan domin ganin cikakken bayani yadda zaku ɗora portfolio a manhajar GitHub.</a></p>
+      <p><a href="/guide" target="_blank">Click here to read on how to create GitHub account and repository, and how to host your portfolio.</a></p>
     </div>
 
     <figure class="ss-py-4">
