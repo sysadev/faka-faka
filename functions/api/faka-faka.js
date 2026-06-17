@@ -104,21 +104,44 @@ export async function onRequestPost(context) {
         const payload = await request.json();
         const prompt = buildPrompt(payload);
 
-        const aiResponse = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:streamGenerateContent?key=${env.GEMINI_API_KEY}`,
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{ parts: [{ text: prompt }] }],
-                    generationConfig: { maxOutputTokens: 64000 }
-                })
-            }
-        );
+        const modelsToTry = [
+            { name: 'gemini-3.5-flash', maxTokens: 64000 },
+            { name: 'gemini-2.5-flash', maxTokens: 64000 }
+        ];
 
-        if (!aiResponse.ok) {
-            const errData = await aiResponse.text();
-            throw new Error(`Google API Error: ${errData}`);
+        let aiResponse = null;
+        let lastErrorData = "";
+        let success = false;
+
+        for (const model of modelsToTry) {
+            try {
+                aiResponse = await fetch(
+                    `https://generativelanguage.googleapis.com/v1beta/models/${model.name}:streamGenerateContent?key=${env.GEMINI_API_KEY}`,
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: prompt }] }],
+                            generationConfig: { maxOutputTokens: model.maxTokens }
+                        })
+                    }
+                );
+
+                if (aiResponse.ok) {
+                    success = true;
+                    break;
+                } else {
+                    lastErrorData = await aiResponse.text();
+                    console.error(`Faka-Faka Backend: ${model.name} failed with error:`, lastErrorData);
+                }
+            } catch (err) {
+                lastErrorData = err.message;
+                console.error(`Faka-Faka Backend: ${model.name} network error:`, lastErrorData);
+            }
+        }
+
+        if (!success) {
+            throw new Error(`Google API Error: All stable models failed to respond. Last error: ${lastErrorData}`);
         }
 
         await env.RATE_LIMITER.put(limitKey, (currentUsage + 1).toString(), { expirationTtl: 86400 });

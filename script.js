@@ -25,7 +25,7 @@ async function faka_faka(event) {
     const statusText = document.getElementById('statusText');
 
     submitBtn.disabled = true;
-    if (statusText) statusText.innerText = "Ana shirya bayanan ku...";
+    if (statusText) statusText.innerText = "Preparing your data...";
 
     try {
         const formData = new FormData(form);
@@ -56,7 +56,7 @@ async function faka_faka(event) {
             imageHeight: dimensions.height
         };
 
-        if (statusText) statusText.innerText = "Ana ƙirƙirar shafuka 11 da fayilolin CSS/JS. Wannan zai ɗauki kusan minti biyu... (Ku ɗan jira)";
+        if (statusText) statusText.innerText = "Generating code... (This takes 1-2 minutes)";
 
         const response = await fetch('/api/faka-faka', {
             method: 'POST',
@@ -70,7 +70,7 @@ async function faka_faka(event) {
             throw new Error(streamedChunks.error);
         }
 
-        if (statusText) statusText.innerText = "Ana tattara shafukan portfolio ɗinku...";
+        if (statusText) statusText.innerText = "Packaging files...";
 
         let combinedText = "";
         streamedChunks.forEach(chunk => {
@@ -162,7 +162,7 @@ async function faka_faka(event) {
         downloadLink.download = `Portfolio_${safeName}.zip`;
         downloadLink.click();
 
-        if (statusText) statusText.innerText = "Komai ya kammala! Ku duba cikin downloads folder ɗinku.";
+        if (statusText) statusText.innerText = "Done! Check your downloads.";
 
         form.reset();
     } catch (err) {
@@ -172,9 +172,9 @@ async function faka_faka(event) {
             const errorMessage = err.message || "";
 
             if (errorMessage.includes('limit of 3 portfolios')) {
-                statusText.innerText = "Yi haƙuri, kun cinye adadin ku na yau (guda 3). Don Allah ku dawo gobe!";
+                statusText.innerText = "Daily limit reached (3/day). Come back tomorrow!";
             } else {
-                statusText.innerText = "Yi haƙuri, an samu matsala wajen haɗa shafukan ku. Don Allah a sake gwadawa bayan ɗan lokaci.";
+                statusText.innerText = "Generation failed. Please try again.";
             }
         }
     } finally {
