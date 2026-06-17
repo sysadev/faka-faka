@@ -39,7 +39,7 @@ function buildPrompt(data) {
 
     Content Instructions (Generate INNER HTML ONLY for exactly 11 pages):
     1. index.html, about.html, resume.html, skills.html, project_1.html, project_2.html, coursework.html, hobbies.html, goals.html, contact.html.
-    2. fcc_journey.html: Write an engaging story about completing the "Responsive Web Design" course on freeCodeCamp. Include EXACTLY: <img src='fcc_certificate.jpg' alt='freeCodeCamp Certificate'> and EXACTLY: <a href='FAKA_FAKA_FCC_LINK'>Verify Authentic Certificate on freeCodeCamp</a>.
+    2. fcc_journey.html: Write an engaging story about completing the "Responsive Web Design" course on freeCodeCamp. Include EXACTLY: <img src='fcc_certificate.jpg' alt='freeCodeCamp Certificate' onerror='event.target.remove()'> and EXACTLY: <a href='FAKA_FAKA_FCC_LINK'>Verify Authentic Certificate on freeCodeCamp</a>.
     - Profile picture placeholder MUST be: <img src='profile.jpg' alt='${data.name} Profile Picture'>.
     - The link to 'fcc_journey.html' MUST be labeled "freeCodeCamp Certification" or "My Learning Journey".
 
