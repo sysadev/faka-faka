@@ -2,7 +2,7 @@ function buildPrompt(data) {
     const schoolName = 'Northwest University, Kano';
     const currentYear = new Date().getFullYear();
 
-    const frameworks = ['Bootstrap 5', 'Bulma', 'Tailwind CSS', 'Materialize CSS', 'UIKit'];
+    const frameworks = ['Bootstrap 5', 'Bulma', 'Tailwind CSS', 'Materialize CSS'];
     const randomFramework = frameworks[Math.floor(Math.random() * frameworks.length)];
 
     const githubText = data.github
