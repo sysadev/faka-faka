@@ -10,9 +10,9 @@ function buildPrompt(data) {
         : `The student does not have a GitHub account yet. Do not include GitHub links.`;
 
     return `CRITICAL GENERATION RULES - YOU MUST OBEY THESE TO PREVENT ERRORS:
-    1. MANDATORY COMPLETION: You MUST generate the Master Layout and ALL 11 INDIVIDUAL PAGES. Do not stop early.
+    1. MANDATORY COMPLETION: You MUST generate the Master Layout, the Style block, the Script block, and ALL 11 INDIVIDUAL PAGES. Do not stop early.
     2. NO EMPTY PAGES: Every single [FAKA_PAGE:filename.html] tag MUST contain actual HTML content inside it. Do not leave any page empty.
-    3. CONSERVE TOKENS: Keep the text content inside the HTML pages brief and concise. Use short sentences.
+    3. RICH CONTENT: Write professional, engaging, and detailed content for each page. Ensure every page has enough content to look like a real, finished portfolio. Do not use repetitive filler text.
     4. NO MARKDOWN: Do not wrap your response in \`\`\`html or \`\`\` blocks. Output only the raw tags.
 
     You are an expert frontend web developer. Generate a completely unique, highly detailed 11-page portfolio website for a university student.
@@ -31,7 +31,7 @@ function buildPrompt(data) {
     Design & Layout Instructions:
     - You MUST use the ${randomFramework} framework via CDN.
     - FORCE STRUCTURAL VARIATION: Randomly choose between a Top Navbar, a Left Sidebar, or a Floating Navigation.
-    - MOBILE RESPONSIVENESS (CRITICAL): You MUST include a visible hamburger menu icon for small screens, and an inline <script> in the master layout to toggle the menu.
+    - MOBILE RESPONSIVENESS & EXTERNAL ASSETS: The layout must be responsive. Do NOT use inline <style> or <script> blocks in the HTML. Include <link rel="stylesheet" href="style.css"> and <script src="script.js" defer></script> inside the <head>.
     - Create ONE master HTML layout string containing the <!DOCTYPE html>, <head>, <nav>, and <footer>.
     - Inside that master layout, put EXACTLY this placeholder where the page content should go: FAKA_FAKA_CONTENT_HERE
     - The copyright year in the footer MUST read ${currentYear}.
@@ -46,14 +46,27 @@ function buildPrompt(data) {
     CRITICAL OUTPUT FORMAT (DO NOT USE JSON):
     You must return the generated website as raw text using EXACTLY these custom delimiters. Do not use markdown blocks.
 
+    [FAKA_STYLE]
+    /* Write all custom CSS for the portfolio here */
+    [/FAKA_STYLE]
+
+    [FAKA_SCRIPT]
+    /* Write all JavaScript (like hamburger menu logic) here */
+    [/FAKA_SCRIPT]
+
     [FAKA_LAYOUT]
     <!DOCTYPE html>
     <html lang="en">
-    <head>...</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${data.name} - Portfolio</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="script.js" defer></script>
+        </head>
     <body>
     <nav>...</nav>
     <main>FAKA_FAKA_CONTENT_HERE</main>
-    <script>/* Hamburger JS */</script>
     <footer>...</footer>
     </body>
     </html>
@@ -98,7 +111,7 @@ export async function onRequestPost(context) {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     contents: [{ parts: [{ text: prompt }] }],
-                    generationConfig: { maxOutputTokens: 50000 }
+                    generationConfig: { maxOutputTokens: 64000 }
                 })
             }
         );

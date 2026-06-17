@@ -56,7 +56,7 @@ async function faka_faka(event) {
             imageHeight: dimensions.height
         };
 
-        if (statusText) statusText.innerText = "Ana ƙirƙirar shafuka 11 gaba ɗaya. Wannan zai ɗauki kusan minti biyu... (Ku ɗan jira)";
+        if (statusText) statusText.innerText = "Ana ƙirƙirar shafuka 11 da fayilolin CSS/JS. Wannan zai ɗauki kusan minti biyu... (Ku ɗan jira)";
 
         const response = await fetch('/api/faka-faka', {
             method: 'POST',
@@ -97,17 +97,34 @@ async function faka_faka(event) {
 
         const zip = new JSZip();
 
+        const styleStartTag = '[FAKA_STYLE]';
+        const styleEndTag = '[/FAKA_STYLE]';
+        const styleStartIdx = combinedText.indexOf(styleStartTag);
+        const styleEndIdx = combinedText.indexOf(styleEndTag);
+        if (styleStartIdx !== -1 && styleEndIdx !== -1) {
+            const styleCSS = combinedText.substring(styleStartIdx + styleStartTag.length, styleEndIdx).trim();
+            zip.file("style.css", styleCSS);
+        }
+
+        const scriptStartTag = '[FAKA_SCRIPT]';
+        const scriptEndTag = '[/FAKA_SCRIPT]';
+        const scriptStartIdx = combinedText.indexOf(scriptStartTag);
+        const scriptEndIdx = combinedText.indexOf(scriptEndTag);
+        if (scriptStartIdx !== -1 && scriptEndIdx !== -1) {
+            const scriptJS = combinedText.substring(scriptStartIdx + scriptStartTag.length, scriptEndIdx).trim();
+            zip.file("script.js", scriptJS);
+        }
+
         const layoutStartTag = '[FAKA_LAYOUT]';
         const layoutEndTag = '[/FAKA_LAYOUT]';
+        const layoutStartIdx = combinedText.indexOf(layoutStartTag);
+        const layoutEndIdx = combinedText.indexOf(layoutEndTag);
 
-        const startIdx = combinedText.indexOf(layoutStartTag);
-        const endIdx = combinedText.indexOf(layoutEndTag);
-
-        if (startIdx === -1 || endIdx === -1) {
+        if (layoutStartIdx === -1 || layoutEndIdx === -1) {
             throw new Error("API failed to generate the master layout correctly.");
         }
 
-        const layoutHTML = combinedText.substring(startIdx + layoutStartTag.length, endIdx).trim();
+        const layoutHTML = combinedText.substring(layoutStartIdx + layoutStartTag.length, layoutEndIdx).trim();
 
         const pageParts = combinedText.split('[FAKA_PAGE:');
         let pagesProcessed = 0;
