@@ -33,6 +33,7 @@ function buildPrompt(data) {
     - FORCE STRUCTURAL VARIATION: Randomly choose between a Top Navbar, a Left Sidebar, or a Floating Navigation.
     - MOBILE RESPONSIVENESS & EXTERNAL ASSETS: The layout must be responsive. Do NOT use inline <style> or <script> blocks in the HTML. Include <link rel="stylesheet" href="style.css"> and <script src="script.js" defer></script> inside the <head>.
     - Create ONE master HTML layout string containing the <!DOCTYPE html>, <head>, <nav>, and <footer>.
+    - FULL NAVIGATION: The <nav> section MUST contain explicitly written links to ALL 11 pages (index.html, about.html, resume.html, skills.html, project_1.html, project_2.html, coursework.html, hobbies.html, goals.html, contact.html, and fcc_journey.html). Do not leave any page out of the menu.
     - Inside that master layout, put EXACTLY this placeholder where the page content should go: FAKA_FAKA_CONTENT_HERE
     - The copyright year in the footer MUST read ${currentYear}.
     - ${githubText}
